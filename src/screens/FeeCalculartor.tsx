@@ -3,8 +3,6 @@ import {
   Form,
   Button,
   Container,
-  Row,
-  Col,
   Popover,
   OverlayTrigger,
 } from "react-bootstrap";
@@ -19,8 +17,6 @@ const FeeCalculartor = () => {
   const [deliveryPrice, setDeliveryPrice] = useState<number>(0);
   const [date, setDate] = useState<Date>(today);
 
-  console.log("Begin");
-
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
     const toltalCost = deliveryCostCal(
@@ -30,31 +26,42 @@ const FeeCalculartor = () => {
       date
     ).toFixed(2);
     setDeliveryPrice(Number(toltalCost));
-    console.log("calculate");
   };
 
   const resetHandler = () => {
-    setCartValue(0);
-    setDistance(0);
-    setItems(0);
     setDeliveryPrice(0);
-    setDate(today);
   };
 
-  const popover = (
-    <Popover id="popover-basic">
-      <Popover.Header as="h3">Cart Value</Popover.Header>
+  const popoverCart = (
+    <Popover id="popover-cart">
       <Popover.Body>
         We recommend you buy more then 10e for the lowest deilivery cost. Order
-        more then 100e is free delivery
+        more then 100e is free delivery.
+      </Popover.Body>
+    </Popover>
+  );
+  const popoverDeliveryDistance = (
+    <Popover id="popover-distance">
+      <Popover.Body>
+        Base delivery fee is 2e for the first 1000m, every extra 500m cost 1e.
+      </Popover.Body>
+    </Popover>
+  );
+  const popoverItems = (
+    <Popover id="popover-items">
+      <Popover.Body>
+        If you have more than 4 items in your cart, a surcharge will be charged
+        0.5e per extra item.
       </Popover.Body>
     </Popover>
   );
 
-  const Example = () => (
-    <OverlayTrigger trigger="click" placement="right" overlay={popover}>
-      <Button variant="success">Click me to see</Button>
-    </OverlayTrigger>
+  const popoverRushHours = (
+    <Popover id="popover-rushHours">
+      <Popover.Body>
+        On Friday from 3PM - 7PM, the delivery will cost 10% more.
+      </Popover.Body>
+    </Popover>
   );
 
   return (
@@ -65,7 +72,11 @@ const FeeCalculartor = () => {
 
       <Form className={classes.form} onSubmit={(e) => submitHandler(e)}>
         <Form.Group className="mb-3" controlId="cartValue">
-          <OverlayTrigger trigger="hover" placement="right" overlay={popover}>
+          <OverlayTrigger
+            trigger={["hover", "focus"]}
+            placement="right"
+            overlay={popoverCart}
+          >
             <Form.Label>Cart Value (€) </Form.Label>
           </OverlayTrigger>
 
@@ -79,12 +90,17 @@ const FeeCalculartor = () => {
             step="any"
             min="0"
             required={true}
-            value={cartValue}
           />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="deliveryDistance">
-          <Form.Label>Delivery Distance (m)</Form.Label>
+          <OverlayTrigger
+            trigger={["hover", "focus"]}
+            placement="right"
+            overlay={popoverDeliveryDistance}
+          >
+            <Form.Label>Delivery Distance (m)</Form.Label>
+          </OverlayTrigger>
           <Form.Control
             type="number"
             placeholder="Distance"
@@ -93,12 +109,17 @@ const FeeCalculartor = () => {
             onChange={(e) => {
               setDistance(+e.target.value);
             }}
-            value={distance}
           />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="items">
-          <Form.Label>Amount of Items </Form.Label>
+          <OverlayTrigger
+            trigger={["hover", "focus"]}
+            placement="right"
+            overlay={popoverItems}
+          >
+            <Form.Label>Amount of Items </Form.Label>
+          </OverlayTrigger>
           <Form.Control
             type="number"
             placeholder="Items"
@@ -106,19 +127,26 @@ const FeeCalculartor = () => {
               setItems(+e.target.value);
             }}
             required={true}
-            min="0"
+            min="1"
             step="1"
-            value={items}
           />
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="deliveryDistance">
-          <Form.Label>Time</Form.Label>
+        <Form.Group className="mb-3" controlId="time">
+          <OverlayTrigger
+            trigger={["hover", "focus"]}
+            placement="right"
+            overlay={popoverRushHours}
+          >
+            <Form.Label>Time</Form.Label>
+          </OverlayTrigger>
           <Form.Control
+            role="time"
             type="datetime-local"
             onChange={(e) => {
               const date = new Date(e.target.value);
               setDate(date);
+              console.log(e.target.value);
             }}
             required={true}
           />
@@ -130,7 +158,12 @@ const FeeCalculartor = () => {
             <Button variant="primary" type="submit" className={classes.button}>
               Calculate Delivery Price
             </Button>
-            <Button variant="primary" type="reset" className={classes.button}>
+            <Button
+              onClick={resetHandler}
+              variant="primary"
+              type="reset"
+              className={classes.button}
+            >
               Reset
             </Button>
           </div>

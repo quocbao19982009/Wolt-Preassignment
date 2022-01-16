@@ -14,18 +14,19 @@ export const deliveryCostCal = (
   const minimumCartValue = 10;
   const defaultDeliveryFee = 2;
   const addtionalDeliveryCost = 1 / 500;
+  const maximumFreeItemsNumber = 4;
   const additionItemsNumberCost = 0.5;
   const maximumSurcharge = 15;
   const maximumCartValue = 100;
   const rushHourCost = 1.1;
 
-  // CartValue > 100
+  // CartValue > maximumCartValue (100e)
   if (cartValue >= maximumCartValue) {
     totalDeliveryCost = 0;
     return totalDeliveryCost;
   }
 
-  // if Cart Value < 10e
+  // if Cart Value < minimumCartValue (10e)
   if (cartValue < minimumCartValue) {
     totalDeliveryCost = totalDeliveryCost + minimumCartValue - cartValue;
   }
@@ -35,7 +36,7 @@ export const deliveryCostCal = (
 
   const extraDistance = distance - 1000;
   if (extraDistance > 0) {
-    if (extraDistance % 500 === 0) {
+    if (extraDistance % (1 / addtionalDeliveryCost) === 0) {
       deliveryFeeCost =
         defaultDeliveryFee + extraDistance * addtionalDeliveryCost;
     } else {
@@ -49,8 +50,9 @@ export const deliveryCostCal = (
   // Surchage for Items Number
   let surchageItemsNumber: number;
 
-  if (items > 5) {
-    surchageItemsNumber = additionItemsNumberCost * (items - 5);
+  if (items > maximumFreeItemsNumber) {
+    surchageItemsNumber =
+      additionItemsNumberCost * (items - maximumFreeItemsNumber);
     totalDeliveryCost = totalDeliveryCost + surchageItemsNumber;
   }
 
@@ -69,7 +71,6 @@ export const deliveryCostCal = (
   }
 
   // Special Case
-
   // Delivery Cost > 15
   if (totalDeliveryCost > maximumSurcharge) {
     totalDeliveryCost = maximumSurcharge;
