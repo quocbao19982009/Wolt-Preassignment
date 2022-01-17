@@ -6,7 +6,7 @@
 
 This is a solution to the preassigment for <a href="https://github.com/woltapp/engineering-summer-intern-2022"> Wolt Summer 2022 Engineering Internships </a>. 
 
-The application is built with React and TypeScripts. The code is readable and maintainable, the application is tested with JEST and Testing Library with E2E test.   
+The application is built with React, TypeScripts and Bootstrap 5. The code is readable and maintainable, the application is tested with JEST and Testing Library with E2E test.   
 
 
 ## Requirements from Assigment
