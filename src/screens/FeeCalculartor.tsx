@@ -105,6 +105,7 @@ const FeeCalculartor = () => {
             type="number"
             placeholder="Distance"
             min="0"
+            step="any"
             required={true}
             onChange={(e) => {
               setDistance(+e.target.value);
@@ -146,7 +147,6 @@ const FeeCalculartor = () => {
             onChange={(e) => {
               const date = new Date(e.target.value);
               setDate(date);
-              console.log(e.target.value);
             }}
             required={true}
           />
