@@ -150,8 +150,7 @@ describe("testing correct calculation", () => {
     userEvent.type(deliveryDistanceInput, "2235");
     userEvent.type(itemsInput, "4");
     fireEvent.change(timeInput, { target: { value: "2022-01-14T16:29" } });
-    // userEvent.type(timeInput, "28/01/2021 18:00");
-    // console.log(timeInput);
+
     // Press calulcate button
 
     userEvent.click(calculateButton);
@@ -190,13 +189,51 @@ describe("testing correct calculation", () => {
     userEvent.type(deliveryDistanceInput, "2235");
     userEvent.type(itemsInput, "6");
     fireEvent.change(timeInput, { target: { value: "2022-01-23T16:29" } });
-    // userEvent.type(timeInput, "28/01/2021 18:00");
-    // console.log(timeInput);
+
     // Press calulcate button
 
     userEvent.click(calculateButton);
 
     // expactation
     expect(deliveryPriceDisplay).toHaveTextContent("Deliver Price: 6€");
+  });
+  test("Combine many conditions (8.9e, 2000m, 7 items, Friday rush hours)", () => {
+    render(<App />);
+
+    const cartValueInput = screen.getByRole("spinbutton", {
+      name: "Cart Value (€)",
+    });
+    const deliveryDistanceInput = screen.getByRole("spinbutton", {
+      name: "Delivery Distance (m)",
+    });
+    const itemsInput = screen.getByRole("spinbutton", {
+      name: "Amount of Items",
+    });
+    const timeInput = screen.getByLabelText("Time");
+    const calculateButton = screen.getByRole("button", {
+      name: "Calculate Delivery Price",
+    });
+    const deliveryPriceDisplay = screen.getByText("Deliver Price:", {
+      exact: false,
+    });
+
+    // clear all Input before type
+    userEvent.clear(cartValueInput);
+    userEvent.clear(deliveryDistanceInput);
+    userEvent.clear(itemsInput);
+    userEvent.clear(timeInput);
+
+    // Type data into input
+    userEvent.type(cartValueInput, "8.9");
+    userEvent.type(deliveryDistanceInput, "2000");
+    userEvent.type(itemsInput, "7");
+    fireEvent.change(timeInput, { target: { value: "2022-01-14T18:04" } });
+
+    // Press calulcate button
+
+    userEvent.click(calculateButton);
+
+    // expactation
+    expect(deliveryPriceDisplay).toHaveTextContent("Deliver Price: 7.26€");
   });
 });
