@@ -8,6 +8,7 @@ This is a solution to the preassigment for <a href="https://github.com/woltapp/e
 
 The application is built with React, TypeScripts and Bootstrap 5. The code is readable and maintainable, the application is tested with JEST and Testing Library with E2E test.   
 
+Demo: https://wolt-calculator.web.app/
 
 ## Requirements from Assigment
 
