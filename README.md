@@ -10,6 +10,20 @@ The application is built with React, TypeScripts and Bootstrap 5. The code is re
 
 Demo: https://wolt-calculator.web.app/
 
+## Using the Project
+
+* Step 1: CD into Wolt-Preassignment
+* Step 2: npm install
+```bash
+cd Wolt-Preassignment
+npm install
+```
+* Step 3: Npm start
+```bash
+npm start
+```
+
+Check in browser on [http://localhost:3000/](http://localhost:3000/)
 ## Requirements from Assigment
 
 Rules for calculating a delivery fee
